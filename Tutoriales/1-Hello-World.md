@@ -45,7 +45,7 @@
     
     8. Estás programando un microcontrolador, como el programa no lo ejecuta tu ordenador, tienes que mandarselo, esto se llama flashear: `idf.py flash`
         - **IMPORTANTE:** Para evitar desgastar de más la memoria del microcontrolador, una vez se ha flasheado por primera vez un proyecto concreto, para sucesivos flasheos al cambiar el codigo, es mejor utilizar en su lugar `idf.py app-flash` para solo flsahear el codigo y no el resto de particiones con datos que no han cambiado.
-        - **En caso de fallo al subir, comprobar que se pertenece al grupo DIALOUT: ** `sudo usermod -a -G dialout $USER`
+        - **En caso de fallo al subir, comprobar que se pertenece al grupo DIALOUT: ** `sudo usermod -a -G dialout $USER` y reiniciar el ordenador para que surja efecto.
         
         - Tip 1: `idf.py` es inteligente, no hace falta que compiles antes de flashear, si hay algun cambio en el codigo, o si no se ha compilado antes, se hará automáticamente antes de flashear.
     
