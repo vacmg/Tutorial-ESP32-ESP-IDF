@@ -45,6 +45,7 @@
     
     8. Estás programando un microcontrolador, como el programa no lo ejecuta tu ordenador, tienes que mandarselo, esto se llama flashear: `idf.py flash`
         - **IMPORTANTE:** Para evitar desgastar de más la memoria del microcontrolador, una vez se ha flasheado por primera vez un proyecto concreto, para sucesivos flasheos al cambiar el codigo, es mejor utilizar en su lugar `idf.py app-flash` para solo flsahear el codigo y no el resto de particiones con datos que no han cambiado.
+        - **En caso de fallo al subir, comprobar que se pertenece al grupo DIALOUT: ** `sudo usermod -a -G dialout $USER`
         
         - Tip 1: `idf.py` es inteligente, no hace falta que compiles antes de flashear, si hay algun cambio en el codigo, o si no se ha compilado antes, se hará automáticamente antes de flashear.
     
@@ -54,3 +55,13 @@
         - Tip 2: Desde el monitor se pueden hacer bastantes [cosas](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-guides/tools/idf-monitor.html), para activar las acciones especiales, pulsa la tecla ctrl+T y luego pulsa la tecla de la acción correspondiente. Por ejemplo, para mostrar el menu de ayuda pulsa ctrl + T seguido de ctrl + H; o para cerrar el monitor ctrl + T seguido de ctrl + X
 
     10. Todo listo!!! Si quieres seguir probando, prueba a utilizar otras funciones de la libreria estandar de C, deberian funcionar igual a como lo hacen en tu ordenador.
+    
+    11. Bonus Track: Hasta ahora hemos utilizado la terminal y un editor de textos basico para trabajar, pero se puede hacer mucho más.
+        Vamos a configurar un IDE para que sea capaz de autocompletar codigo y ayudarnos a detectar errores más facilmente. Los pasos a seguir se harán con el IDE CLion, pero la configuración es similar en otros IDEs compatibles con CMake.
+        1. Abrimos la carpeta del proyecto creado con `idf.py create-project` en CLion. Debería salir un asistente de configuración de CMake. Si no sale, navegar a File -> Settings -> Build, Execution, Deployment -> CMake
+        2. En la configuración de CMake seleccionamos `Ninja` como Generador y `build` como build folder.
+        3. En la configuración de CMake, entramos en el menu de environment, y añadimos una nueva variable llamada `IDF_PATH` con la ruta absoluta a la carpeta de instalación de la toolchain (`esp-idf/`)
+        4. En una terminal, ejecutamos la activación de la toolchain (`. export.sh`) y copiamos el PATH modificado (`echo $PATH`)
+        5. En el menú de environment, editamos la variable PATH, borrando todo lo que haya y sustituyendolo por el PATH que hemos copiado antes.
+        6. Dar a OK y aplicar, y ver como se recarga la configuración, y todo está disponible desde el IDE.
+
