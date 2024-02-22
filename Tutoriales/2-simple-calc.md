@@ -4,10 +4,10 @@
 1. Crea un proyecto vacío llamado simple-calc
     - Recuerda primero activar el entorno con `. ...esp-idf/export.sh`
 
-2. Para implementar una consola interactiva, se debe implementar un sistema REPL (Read Eval Print Loop). Por suerte, esp-idf tiene una [libreria](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/console.html) que podemos utilizar.
+2. Para implementar una consola interactiva, se debe implementar un sistema REPL (Read Eval Print Loop). Por suerte, esp-idf tiene una [librería](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/console.html) que podemos utilizar.
     Vamos a trabajar en el componente main (simple-calc.c) la configuración de la terminal
     
-    1. Primero debemos incluir las librerias que vamos a necesitar al principio del programa:
+    1. Primero debemos incluir las librerías que vamos a necesitar al principio del programa:
         ```
         #include <stdio.h>
         #include <string.h>
@@ -84,21 +84,21 @@
         }
         ```
     
-    3. En la función principal, lo primero que haremos es llamar a la funcion de configuración de la terminal `initialize_console()` y definir el prompt:
+    3. En la función principal, lo primero que haremos es llamar a la función de configuración de la terminal `initialize_console()` y definir el prompt:
         ```
         #define PROMPT_TEXT "calc>"
         const char* prompt = LOG_COLOR_W PROMPT_TEXT LOG_RESET_COLOR;
         ```
         Hemos decidido darle un color al prompt para que no se vea en blanco (el color elegido es el mismo de los mensajes de warning, amarillo)
         
-    4. Creamos una nueva función llamada `registerCommands()`, la llamamos debajo de la definición del prompt y en la definicion escribimos:
+    4. Creamos una nueva función llamada `registerCommands()`, la llamamos debajo de la definición del prompt y en la definición escribimos:
         ```
         void registerCommands(void)
         {
             esp_console_register_help_command();
         }
         ```
-        Para registrar otros futuros comandos, se añadiran aquí.
+        Para registrar otros futuros comandos, se añadirán aquí.
         El comando help es un comando integrado que automáticamente muestra un mensaje de ayuda de todos los comandos registrados.
         
     5. Ponemos el mensaje inicial con las instrucciones de uso, y realizamos una comprobación para saber si el terminal es interactivo (soporta caracteres escapados).
@@ -122,7 +122,7 @@
         }
         ```
         
-    6. Por fín hemos terminado de configurar la terminal!!! ahora solo queda ponerla en marcha. Como hemos dicho al principio, se debe implementar un sistema REPL (Read Eval Print Loop), por lo que vamos a necesitar un bucle en el que leamos una linea, procesemos el comando y devolvamos una respuesta, y volvamos al principio a leer la siguiente linea. Si leemos una linea vacía, la ignoramos.
+    6. ¡¡¡Por fín hemos terminado de configurar la terminal!!! Ahora solo queda ponerla en marcha. Como hemos dicho al principio, se debe implementar un sistema REPL (Read Eval Print Loop), por lo que vamos a necesitar un bucle en el que leamos una línea, procesemos el comando y devolvamos una respuesta, y volvamos al principio a leer la siguiente línea. Si leemos una línea vacía, la ignoramos.
         ```
         while(true)
         {
@@ -164,7 +164,7 @@
 
 3. Una vez programada la terminal, es hora de crear los comandos de las operaciones de la calculadora: `sum a b`, `rest a b` y `mult a b`
     
-    1. Empezemos por la suma: Debemos crear una estructura que contenga los argumentos de nuestro comando, siguiendo la documentación de [argTable](https://www.argtable.org/):
+    1. Empecemos por la suma: Debemos crear una estructura que contenga los argumentos de nuestro comando, siguiendo la documentación de [argTable](https://www.argtable.org/):
         ```
         static struct
         {
@@ -175,7 +175,7 @@
         ```
         a y b son argumentos de tipo entero, y end se necesita para que funcione el parser.
     
-    2. Nuestra función de suma es muy sencilla: Recibe argc y argv como parametros, que se pasan al parser, este los guarda en la estructura creada anteriormente y a partir de ahi se pueden utilizar con normalidad.
+    2. Nuestra función de suma es muy sencilla: Recibe argc y argv como parámetros, que se pasan al parser, este los guarda en la estructura creada anteriormente y a partir de ahí se pueden utilizar con normalidad.
         ```
         static int add_operation(int argc, char **argv)
         {
@@ -208,10 +208,10 @@
             ESP_ERROR_CHECK( esp_console_cmd_register(&cmd) );
         }
         ```
-        Se definen la forma que tendrán los argumentos de la función y sus nombres, y el numero de argumentos en .end
-        Por ultimo se configura el nombre del comando, su mensaje de ayuda y la función que se utiliza para ejecutar el comando (`add_operation()`).
+        Se definen la forma que tendrán los argumentos de la función y sus nombres, y el número de argumentos en .end
+        Por último se configura el nombre del comando, su mensaje de ayuda y la función que se utiliza para ejecutar el comando (`add_operation()`).
     
-    4. Solo queda añadir el la llamada a la función `register_sum()` en `registerCommands()`:
+    4. Solo queda añadir la llamada a la función `register_sum()` en `registerCommands()`:
         ```
         void registerCommands(void)
         {
@@ -221,4 +221,8 @@
         ```
     
     5. Para el resto de comandos, hay que repetir este mismo proceso, ya que son muy similares.
+
+4. Compila el proyecto con `idf.py build` y flashea el microcontrolador con `idf.py flash` (`idf.py app-flash` para futuros flasheos).
+
+5. Abre el monitor con `idf.py monitor` y prueba los comandos que has creado. Si todo ha ido bien, deberías ver el resultado de las operaciones en la terminal.
 
