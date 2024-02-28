@@ -101,7 +101,7 @@
         Para registrar otros futuros comandos, se añadirán aquí.
         El comando help es un comando integrado que automáticamente muestra un mensaje de ayuda de todos los comandos registrados.
         
-    5. Ponemos el mensaje inicial con las instrucciones de uso, y realizamos una comprobación para saber si el terminal es interactivo (soporta caracteres escapados).
+    5. En la funcion `main()`: Debajo de la llamada a `registerCommands()` ponemos el mensaje inicial con las instrucciones de uso, y realizamos una comprobación para saber si el terminal es interactivo (soporta caracteres escapados).
         ```
         printf("\n"
            "Type 'help' to get the list of commands.\n"
