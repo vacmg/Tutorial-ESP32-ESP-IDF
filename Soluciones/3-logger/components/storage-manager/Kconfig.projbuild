@@ -1,0 +1,9 @@
+menu "Logger Storage Configuration"
+    config STORAGE_PARTITION_LABEL
+        string "Storage Partition Label"
+        default "storage"
+        help
+            The label of the partition to use for storage. This partition must be
+            defined in the partition table CSV file.
+
+endmenu

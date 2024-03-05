@@ -1,0 +1,4 @@
+# Name,   Type, SubType, Offset,  Size, Flags
+
+bin,  app,  factory, ,  1M,
+storage,  data, spiffs, , 512K,

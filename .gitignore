@@ -1,3 +1,6 @@
 workspace/
 .idea/
 build/
+sdkconfig
+sdkconfig.old
+
