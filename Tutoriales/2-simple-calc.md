@@ -1,8 +1,13 @@
 # Simple Calculator
     Este proyecto consiste en crear una calculadora basica que acepte 3 operaciones de numeros enteros: la suma, resta y multiplicación utilizando la terminal como entrada. El objetivo es aprender a manejar el componente esp_console, y la salida por terminal.
 
-1. Crea un proyecto vacío llamado simple-calc
+1. Crea un proyecto vacío llamado simple-calc, utilizando el comando `idf.py create project`
     - Recuerda primero activar el entorno con `. ...esp-idf/export.sh`
+
+> [!NOTE] 
+> En el tutorial 1, se te recomendo que guardases este comando en una variable de entorno, en ese caso la llamaban esp, y esto paso puedes hacerlo llamando a ese alias.
+> Si no lo hiciste y quieres hacerlo, puedes llamarlo con `alias esp=". $HOME/rutaAInstalacion/esp-idf/export.sh"`
+
 
 2. Para implementar una consola interactiva, se debe implementar un sistema REPL (Read Eval Print Loop). Por suerte, esp-idf tiene una [librería](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/console.html) que podemos utilizar.
     Vamos a trabajar en el componente main (simple-calc.c) la configuración de la terminal
@@ -84,14 +89,14 @@
         }
         ```
     
-    3. En la función principal, lo primero que haremos es llamar a la función de configuración de la terminal `initialize_console()` y definir el prompt:
+    3. En la funcion `main()`, lo primero que haremos es llamar a la función de configuración de la terminal `initialize_console()` y definir el prompt:
         ```
         #define PROMPT_TEXT "calc>"
         const char* prompt = LOG_COLOR_W PROMPT_TEXT LOG_RESET_COLOR;
         ```
         Hemos decidido darle un color al prompt para que no se vea en blanco (el color elegido es el mismo de los mensajes de warning, amarillo)
         
-    4. Creamos una nueva función llamada `registerCommands()`, la llamamos debajo de la definición del prompt y en la definición escribimos:
+    4. Creamos una nueva función llamada `registerCommands()`, la llamamos en la funcion `main()`, debajo de la definición del prompt y en la definición escribimos:
         ```
         void registerCommands(void)
         {
@@ -225,4 +230,3 @@
 4. Compila el proyecto con `idf.py build` y flashea el microcontrolador con `idf.py flash` (`idf.py app-flash` para futuros flasheos).
 
 5. Abre el monitor con `idf.py monitor` y prueba los comandos que has creado. Si todo ha ido bien, deberías ver el resultado de las operaciones en la terminal.
-
