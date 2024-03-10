@@ -102,6 +102,7 @@
         {
             esp_console_register_help_command();
         }
+
         ```
         Para registrar otros futuros comandos, se añadirán aquí.
         El comando help es un comando integrado que automáticamente muestra un mensaje de ayuda de todos los comandos registrados.
@@ -225,7 +226,8 @@
         }
         ```
     
-    5. Para el resto de comandos, hay que repetir este mismo proceso, ya que son muy similares.
+    5. Para comprobar el funcionamiento correcto de la terminal, prueba a realizar operaciones como `add 3 5` y `add 3 R`
+    6. Para el resto de comandos, hay que repetir este mismo proceso, ya que son muy similares.
 
 4. Compila el proyecto con `idf.py build` y flashea el microcontrolador con `idf.py flash` (`idf.py app-flash` para futuros flasheos).
 
