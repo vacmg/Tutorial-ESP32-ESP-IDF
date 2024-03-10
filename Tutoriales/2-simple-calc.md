@@ -98,6 +98,7 @@
         
     4. Creamos una nueva función llamada `registerCommands()`, la llamamos en la funcion `main()`, debajo de la definición del prompt y en la definición escribimos:
         ```
+        /*Esta función almacena los comandos que existen en la terminal*/
         void registerCommands(void)
         {
             esp_console_register_help_command();
@@ -183,6 +184,7 @@
     
     2. Nuestra función de suma es muy sencilla: Recibe argc y argv como parámetros, que se pasan al parser, este los guarda en la estructura creada anteriormente y a partir de ahí se pueden utilizar con normalidad.
         ```
+        /* Esta función realiza la operación de suma con los parametros recibidos en la terminal si los parámetros son válidos */
         static int add_operation(int argc, char **argv)
         {
             int nerrors = arg_parse(argc, argv, (void **) &operation_args);
@@ -198,6 +200,7 @@
         ```
     3. Para registrar el comando, se utiliza la función `esp_console_cmd_register()`, pero para que nos sea más cómodo, vamos a crearnos una función llamada `register_sum()` que registre el comando sum:
         ```
+        /* Esta función es la que se encarga de obtener la información para realizar la suma mediante la struct operation_args y crea el comando con esp_console_cmd_t*/
         static void register_sum(void)
         {
             operation_args.a = arg_int1(NULL, NULL, "A", "First operand of the addition");
@@ -205,11 +208,11 @@
             operation_args.end = arg_end(2);
 
             const esp_console_cmd_t cmd = {
-                    .command = "add",
-                    .help = "Perform the addition of two integers: A + B",
-                    .hint = NULL,
-                    .func = &add_operation,
-                    .argtable = &operation_args
+                    .command = "add", /*nombre del comando*/
+                    .help = "Perform the addition of two integers: A + B", /* descripción del comando*/
+                    .hint = NULL, /*información adicional de como usar el comando*/
+                    .func = &add_operation, /*función a la que se llama para ejecutar el comando*/
+                    .argtable = &operation_args /*Estructura de argumentos asociada a ese comando*/
             };
             ESP_ERROR_CHECK( esp_console_cmd_register(&cmd) );
         }
