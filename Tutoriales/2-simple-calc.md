@@ -1,8 +1,10 @@
 # Simple Calculator
     Este proyecto consiste en crear una calculadora basica que acepte 3 operaciones de numeros enteros: la suma, resta y multiplicación utilizando la terminal como entrada. El objetivo es aprender a manejar el componente esp_console, y la salida por terminal.
 
-1. Crea un proyecto vacío llamado simple-calc
+1. Crea un proyecto vacío llamado simple-calc, utilizando el comando `idf.py create project`
     - Recuerda primero activar el entorno con `. ...esp-idf/export.sh`
+    - En el tutorial 1, se te recomendo que guardases este comando en una variable de entorno, en ese caso la llamaban esp, y esto paso puedes hacerlo llamando a ese alias. Si no lo hiciste y quieres hacerlo, puedes crearlo escribiendo el la terminal `alias esp=". $HOME/rutaAInstalacion/esp-idf/export.sh"`
+
 
 2. Para implementar una consola interactiva, se debe implementar un sistema REPL (Read Eval Print Loop). Por suerte, esp-idf tiene una [librería](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/console.html) que podemos utilizar.
     Vamos a trabajar en el componente main (simple-calc.c) la configuración de la terminal
@@ -84,19 +86,21 @@
         }
         ```
     
-    3. En la función principal, lo primero que haremos es llamar a la función de configuración de la terminal `initialize_console()` y definir el prompt:
+    3. En la funcion `main()`, lo primero que haremos es llamar a la función de configuración de la terminal `initialize_console()` y definir el prompt:
         ```
         #define PROMPT_TEXT "calc>"
         const char* prompt = LOG_COLOR_W PROMPT_TEXT LOG_RESET_COLOR;
         ```
         Hemos decidido darle un color al prompt para que no se vea en blanco (el color elegido es el mismo de los mensajes de warning, amarillo)
         
-    4. Creamos una nueva función llamada `registerCommands()`, la llamamos debajo de la definición del prompt y en la definición escribimos:
+    4. Creamos una nueva función llamada `registerCommands()`, la llamamos en la funcion `main()`, debajo de la definición del prompt y en la definición escribimos:
         ```
+        /*Esta función almacena los comandos que existen en la terminal*/
         void registerCommands(void)
         {
             esp_console_register_help_command();
         }
+
         ```
         Para registrar otros futuros comandos, se añadirán aquí.
         El comando help es un comando integrado que automáticamente muestra un mensaje de ayuda de todos los comandos registrados.
@@ -177,6 +181,7 @@
     
     2. Nuestra función de suma es muy sencilla: Recibe argc y argv como parámetros, que se pasan al parser, este los guarda en la estructura creada anteriormente y a partir de ahí se pueden utilizar con normalidad.
         ```
+        /* Esta función realiza la operación de suma con los parametros recibidos en la terminal si los parámetros son válidos */
         static int add_operation(int argc, char **argv)
         {
             int nerrors = arg_parse(argc, argv, (void **) &operation_args);
@@ -192,6 +197,7 @@
         ```
     3. Para registrar el comando, se utiliza la función `esp_console_cmd_register()`, pero para que nos sea más cómodo, vamos a crearnos una función llamada `register_sum()` que registre el comando sum:
         ```
+        /* Esta función es la que se encarga de obtener la información para realizar la suma mediante la struct operation_args y crea el comando con esp_console_cmd_t*/
         static void register_sum(void)
         {
             operation_args.a = arg_int1(NULL, NULL, "A", "First operand of the addition");
@@ -199,11 +205,11 @@
             operation_args.end = arg_end(2);
 
             const esp_console_cmd_t cmd = {
-                    .command = "add",
-                    .help = "Perform the addition of two integers: A + B",
-                    .hint = NULL,
-                    .func = &add_operation,
-                    .argtable = &operation_args
+                    .command = "add", /*nombre del comando*/
+                    .help = "Perform the addition of two integers: A + B", /* descripción del comando*/
+                    .hint = NULL, /*información adicional de como usar el comando*/
+                    .func = &add_operation, /*función a la que se llama para ejecutar el comando*/
+                    .argtable = &operation_args /*Estructura de argumentos asociada a ese comando*/
             };
             ESP_ERROR_CHECK( esp_console_cmd_register(&cmd) );
         }
@@ -225,4 +231,5 @@
 4. Compila el proyecto con `idf.py build` y flashea el microcontrolador con `idf.py flash` (`idf.py app-flash` para futuros flasheos).
 
 5. Abre el monitor con `idf.py monitor` y prueba los comandos que has creado. Si todo ha ido bien, deberías ver el resultado de las operaciones en la terminal.
-
+  - Para comprobar el funcionamiento correcto de la terminal, prueba a realizar operaciones como `add 3 5` (resultado correcto) y `mult 3 R` (error en el segundo argumento)
+  - También comprueba que el autocompletado, el historial y la sugerencia de comandos funciona correctamente (usando TAB y las flechas arriba y abajo)
