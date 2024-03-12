@@ -3,10 +3,7 @@
 
 1. Crea un proyecto vacío llamado simple-calc, utilizando el comando `idf.py create project`
     - Recuerda primero activar el entorno con `. ...esp-idf/export.sh`
-
-> [!NOTE] 
-> En el tutorial 1, se te recomendo que guardases este comando en una variable de entorno, en ese caso la llamaban esp, y esto paso puedes hacerlo llamando a ese alias.
-> Si no lo hiciste y quieres hacerlo, puedes llamarlo con `alias esp=". $HOME/rutaAInstalacion/esp-idf/export.sh"`
+    - En el tutorial 1, se te recomendo que guardases este comando en una variable de entorno, en ese caso la llamaban esp, y esto paso puedes hacerlo llamando a ese alias. Si no lo hiciste y quieres hacerlo, puedes crearlo escribiendo el la terminal `alias esp=". $HOME/rutaAInstalacion/esp-idf/export.sh"`
 
 
 2. Para implementar una consola interactiva, se debe implementar un sistema REPL (Read Eval Print Loop). Por suerte, esp-idf tiene una [librería](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/console.html) que podemos utilizar.
@@ -229,9 +226,10 @@
         }
         ```
     
-    5. Para comprobar el funcionamiento correcto de la terminal, prueba a realizar operaciones como `add 3 5` y `add 3 R`
-    6. Para el resto de comandos, hay que repetir este mismo proceso, ya que son muy similares.
+    5. Para el resto de comandos, hay que repetir este mismo proceso, ya que son muy similares.
 
 4. Compila el proyecto con `idf.py build` y flashea el microcontrolador con `idf.py flash` (`idf.py app-flash` para futuros flasheos).
 
 5. Abre el monitor con `idf.py monitor` y prueba los comandos que has creado. Si todo ha ido bien, deberías ver el resultado de las operaciones en la terminal.
+  - Para comprobar el funcionamiento correcto de la terminal, prueba a realizar operaciones como `add 3 5` (resultado correcto) y `mult 3 R` (error en el segundo argumento)
+  - También comprueba que el autocompletado, el historial y la sugerencia de comandos funciona correctamente (usando TAB y las flechas arriba y abajo)
