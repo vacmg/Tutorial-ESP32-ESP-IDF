@@ -1,5 +1,14 @@
 En este proyecto, vamos a crear un logger que registra un mensaje en un archivo cada vez que el ESP32 se inicia. También imprimirá cada línea presente en el archivo de logs.
 
+Un logger es un programa que registra los eventos que ocurren en un sistema. En nuestro logger simplificado, vamos a guardar cuando se ha iniciado el microcontrolador, y para hacerlo más sencillo, en lugar de guardar el momento del inicio, guardaremos el mensaje de evento junto con cuantos inicios lleva el sistema.
+
+Los logger pueden simplemente enviar los eventos por alguna terminal según se van produciendo, o pueden guardarse en archivos de texto, para su posterior analisis. En este tutorial, vamos a guardar el archivo de logs en la memoria interna del microcontrolador.
+
+El plan de acción es el siguiente:
+- Se debe crear una tabla de particiones personalizada, para incluir una partición de almacenamiento donde guardar el arhivo de logs.
+- Se debe crear el código que se encargue de montar la partición y el sistema de archivos para poder usarse en el logger
+- Se debe crear el código del propio logger
+
 1. Hay que crear un nuevo proyecto llamado logger:
     1. Se debe ejecutar `idf.py create-project logger`.
     2. Si se va a utilizar un IDE para programar el proyecto, se debe configurar CMake en el IDE (según lo visto en el punto 11 del tutorial 1 (Hello world)).
@@ -205,6 +214,29 @@ En este proyecto, vamos a crear un logger que registra un mensaje en un archivo 
 
 5. Ahora debemos de añadir la funcionalidad de logger. Queremos que cada vez que se inicie el ESP32, se guarde una línea en el log que diga: `Inicio nº X` siendo X el número de veces que se ha iniciado anteriormente, y además, queremos que se impriman todas las líneas guardadas. Para ello:
     1. Vamos a comentar el código que lee el archivo `readme.txt` (desde `StoragePartitionManager::mount()` hasta `StoragePartitionManager::unmount()` sin incluir ninguna de esas 2 líneas).
+    ```
+    extern "C" void app_main(void)
+    {
+        StoragePartitionManager::mount();
+
+        // FILE* file = fopen("/storage/readme.txt", "r");
+        // if (file == nullptr)
+        // {
+        //     ESP_LOGE(MAIN_TAG, "Failed to open file for reading");
+        // }
+        // else
+        // {
+        //     char line[1024];
+        //     while (fgets(line, sizeof(line), file))
+        //     {
+        //         printf("%s", line);
+        //     }
+        //     fclose(file);
+        // }
+
+        StoragePartitionManager::unmount();
+    }
+    ```
     2. Ahora vamos a trabajar justo debajo de las líneas comentadas. Vamos a guardar en un archivo cual es el número del último inicio, para poder leerlo al iniciar el sistema, y actualizarlo: lo primero es leer el número ya escrito:
         ```
         int bootNumber = 0;  
